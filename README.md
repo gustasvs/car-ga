@@ -11,11 +11,11 @@ kur `X` ir ceļa garums (N), ja to neievada, tad tiek izmantota noklusējuma vē
 
 Pirms atrādīšanas, tā tiek apmācīta izmantojot `POPULATION_SIZE = 250` un `GA_STEPS = 1000`.
 
-Lai atkārtotu rezultātus, var palaist vienkārši 
+Savukārt, lai atkātotu dokumentā veikto eksperimentu rezultātus, var palaist vienkārši 
 ```
 python game.py
 ```
 
-lai iegūtu dažādu "konfigurāciju" rezultātus ir kodā jāpamaina POPULATION_SIZE un GA_STEPS.
+un dažādu "konfigurāciju" rezultātu iegūšanai ir kodā jāpamaina POPULATION_SIZE un GA_STEPS.
 
 ![](doc/assets/ga_quality_gap.png)

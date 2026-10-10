@@ -143,7 +143,9 @@ def visualize(
     delta_x=10,
     k_drag=0.1,
     k_roll=0.005,
+    zoom=True,
 ):
+    """Animate a run, optionally keeping the camera zoomed in on the car."""
     points = build_road_points(road, delta_x)
 
     xs = [p[0] for p in points]
@@ -233,14 +235,28 @@ def visualize(
 
     view_width = max(70, delta_x * 7)
     view_height = max(38, view_width * 0.48)
-    ax.set_xlim(
-        xs[0] - view_width * CAMERA_FOLLOW_X,
-        xs[0] + view_width * (1 - CAMERA_FOLLOW_X),
-    )
-    ax.set_ylim(
-        ys[0] - view_height * CAMERA_FOLLOW_Y,
-        ys[0] + view_height * (1 - CAMERA_FOLLOW_Y),
-    )
+    if zoom:
+        ax.set_xlim(
+            xs[0] - view_width * CAMERA_FOLLOW_X,
+            xs[0] + view_width * (1 - CAMERA_FOLLOW_X),
+        )
+        ax.set_ylim(
+            ys[0] - view_height * CAMERA_FOLLOW_Y,
+            ys[0] + view_height * (1 - CAMERA_FOLLOW_Y),
+        )
+    else:
+        road_width = max(xs) - min(xs)
+        road_height = max(ys) - min(ys)
+        horizontal_padding = max(car_length, road_width * 0.03)
+        vertical_padding = max(car_height * 2, road_height * 0.08)
+        ax.set_xlim(
+            min(xs) - horizontal_padding,
+            max(xs) + horizontal_padding,
+        )
+        ax.set_ylim(
+            min(ys) - vertical_padding,
+            max(ys) + vertical_padding,
+        )
 
     # Very important:
     # 20 degrees visually appears as 20 degrees.
@@ -361,14 +377,15 @@ def visualize(
         rear_wheel.center = oriented_point(car_x, car_y, angle, -car_length * 0.29, 0.35)
         front_wheel.center = oriented_point(car_x, car_y, angle, car_length * 0.29, 0.35)
 
-        ax.set_xlim(
-            car_x - view_width * CAMERA_FOLLOW_X,
-            car_x + view_width * (1 - CAMERA_FOLLOW_X),
-        )
-        ax.set_ylim(
-            car_y - view_height * CAMERA_FOLLOW_Y,
-            car_y + view_height * (1 - CAMERA_FOLLOW_Y),
-        )
+        if zoom:
+            ax.set_xlim(
+                car_x - view_width * CAMERA_FOLLOW_X,
+                car_x + view_width * (1 - CAMERA_FOLLOW_X),
+            )
+            ax.set_ylim(
+                car_y - view_height * CAMERA_FOLLOW_Y,
+                car_y + view_height * (1 - CAMERA_FOLLOW_Y),
+            )
         speed = max(0, current["start_velocity"] + current["acceleration"] * local_t)
         status.set_text(f"ROAD RUN  /  SEGMENT {i + 1:02d}  /  {speed:04.1f} m/s")
 

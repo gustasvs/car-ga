@@ -304,7 +304,7 @@ def optimise_ga_on_road(road, visualize_results=True):
             delta_x=DELTA_X,
             k_drag=K_DRAG,
             k_roll=K_ROLL,
-            zoom=False,
+            zoom=True,
         )
 
 if __name__ == "__main__":
